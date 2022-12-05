@@ -13,16 +13,20 @@ ggplot(data=Pemba)+geom_sf()+geom_sf(data=grid_df,aes(fill=Value))
 
 
 
-Pem_shehia<-Pemba%>%filter(NAME_3=="Mtambwe Kaskazini")
+Pem_shehia<-Pemba%>%filter(NAME_3=="Msuka Magharibi")
+#Pem_shehia<- st_crop(Pem_shehia, xmin = 39.685, xmax = 39.77,
+                      #       ymin = -5.175139, ymax = -5.069029)
 grid_df_shehia<-grid_df[Pem_shehia,]
+#grid_df_shehia<- st_crop(grid_df_shehia, xmin = 39.685, xmax = 39.77,
+                    # ymin = -5.175139, ymax = -5.069029)
 
 ggplot(data=Pem_shehia)+geom_sf()+geom_sf(data=grid_df_shehia,alpha=0.2)+
-  geom_sf_label(data=grid_df_shehia,aes(label=Value))
+  geom_sf_label(data=grid_df_shehia,aes(label=Value),size=4)
 
 writeClipboard(rep(as.character(grid_df_shehia$Value),10))
 
-writeClipboard(rep(as.character(c("sh1_1","sh1_2","sh1_3","sh1_4","sh1_5",
-                     "sh1_6","sh1_7","sh1_8","sh1_9","sh1_10")),each=length(grid_df_shehia$Value)))
+writeClipboard(rep(as.character(c("sh43_1","sh43_2","sh43_3","sh43_4","sh43_5",
+                     "sh43_6","sh43_7","sh43_8","sh43_9","sh43_10")),each=length(grid_df_shehia$Value)))
                 
 
 

@@ -1,0 +1,19 @@
+---
+title: "Equations"
+author: "Matt Clark"
+date: "8/7/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+$$
+\begin{aligned}
+  \operatorname{BundlesAbleToCollect230}_{i}  &\sim \operatorname{Poisson}(\lambda_i) \\
+    \log(\lambda_i) &=\alpha_{j[i]} + \beta_{1}(\operatorname{stdOutsidersCutting}) + \beta_{2}(\operatorname{stdMangPercDecl}) + \beta_{3}(\operatorname{Occupation3111}_{\operatorname{Craftsman}}) + \beta_{4}(\operatorname{Occupation3111}_{\operatorname{Farmer}}) + \beta_{5}(\operatorname{Occupation3111}_{\operatorname{Fisherman}}) + \beta_{6}(\operatorname{Occupation3111}_{\operatorname{Government}}) + \beta_{7}(\operatorname{Occupation3111}_{\operatorname{Livestock}}) + \beta_{8}(\operatorname{CommmitteeMem}) + \beta_{9}(\operatorname{stdMangPercDecl} \times \operatorname{stdOutsidersCutting}) \\
+    \alpha_{j}  &\sim N \left(\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{stdMangArea}) + \gamma_{2}^{\alpha}(\operatorname{REDDP}_{\operatorname{REDD}}), \sigma^2_{\alpha_{j}} \right)
+    \text{, for Shehia314 j = 1,} \dots \text{,J}
+\end{aligned}
+$$
