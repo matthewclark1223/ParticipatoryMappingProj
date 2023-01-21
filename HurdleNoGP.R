@@ -44,8 +44,8 @@ mytheme=theme(legend.position = "right", plot.background = element_rect(fill = "
 
 
 
-postdfBERN<-postdf%>%select(92:97)%>%mutate(Draw=1:nrow(postdf))%>%
-  pivot_longer(1:6,names_to = "Effect",values_to = "Estimate" )
+postdfBERN<-postdf%>%select(c(92:93,95:97))%>%mutate(Draw=1:nrow(postdf))%>%
+  pivot_longer(1:5,names_to = "Effect",values_to = "Estimate" )
 
 #number of draws where effect of REDD <0
 length(which(postdfBERN[postdfBERN$Effect=="EffREDDBern",]$Estimate<0))/
@@ -57,10 +57,12 @@ length(which(postdfBERN[postdfBERN$Effect=="EffTheftBern",]$Estimate>0))/
   nrow(postdfBERN[postdfBERN$Effect=="EffTheftBern",])
 
 #number of draws where effect of committee >0
-length(which(postdfBERN[postdfBERN$Effect=="EffGenBern",]$Estimate>0))/
+length(which(postdfBERN[postdfBERN$Effect=="EffMembBern",]$Estimate>0))/
   nrow(postdfBERN[postdfBERN$Effect=="EffMembBern",])
 
-
+#number of draws where effect of Male >0
+length(which(postdfBERN[postdfBERN$Effect=="EffGenBern",]$Estimate>0))/
+  nrow(postdfBERN[postdfBERN$Effect=="EffGenBern",])
 
 
 
@@ -68,18 +70,21 @@ ggplot(postdfBERN,aes(x=Estimate,y=Effect))+
   ggridges::geom_density_ridges()+geom_vline(xintercept  =0,linetype=2)+
   theme_bw()+xlab("Estimated effect")+ylab("Predictor")+
   ggtitle("Predictors of participating in patrols (dorias)")+
-  scale_y_discrete(breaks=c(names(postdf)[92:97]),
-    labels=c("Mangroves\ndeclining","Theft","Mangrove size","REDD","Committee\nmember","Male"))+
+  scale_y_discrete(breaks=c(names(postdf)[c(92:93,95:97)]),
+    labels=c("Mangroves\ndeclining","Theft","REDD","Committee\nmember","Male"))+
   mytheme
   
 
-postdfNB<-postdf%>%select(97:102)%>%mutate(Draw=1:nrow(postdf))%>%
-  pivot_longer(1:6,names_to = "Effect",values_to = "Estimate" )
+postdfNB<-postdf%>%select(c(98:99,101:103))%>%mutate(Draw=1:nrow(postdf))%>%
+  pivot_longer(1:5,names_to = "Effect",values_to = "Estimate" )
 
 
 #number of draws where effect of committee >0
 length(which(postdfNB[postdfNB$Effect=="EffMembNB",]$Estimate>0))/
   nrow(postdfNB[postdfNB$Effect=="EffMembNB",])
+
+length(which(postdfNB[postdfNB$Effect=="EffGenNB",]$Estimate>0))/
+  nrow(postdfNB[postdfNB$Effect=="EffGenNB",])
 
 ggplot(postdfNB,aes(x=Estimate,y=Effect))+
   ggridges::geom_density_ridges()+geom_vline(xintercept  =0,linetype=2 )+
@@ -97,8 +102,8 @@ ggplot(postdfBERN,aes(x=Estimate,y=Effect,fill = 0.5 - abs(0.5 - stat(ecdf))))+
   theme_bw()+xlab("Standardized coefficient estimate")+ylab("Predictor")+
   scale_x_continuous(breaks=c(-2,0,2))+
   #ggtitle("Predictors of participating in patrols (dorias)")+
-  scale_y_discrete(breaks=c(names(postdf)[92:97]),
-                   labels=c("Mangroves\ndeclining","Theft","Mangrove size","REDD","Committee\nmember","Male"))+
+  scale_y_discrete(breaks=c(names(postdf)[c(92:93,95:97)]),
+                   labels=c("Mangroves\ndeclining","Theft","REDD","Committee\nmember","Male"))+
   mytheme
 
 ggplot(postdfNB,aes(x=Estimate,y=Effect,fill = 0.5 - abs(0.5 - stat(ecdf))))+
@@ -108,8 +113,8 @@ ggplot(postdfNB,aes(x=Estimate,y=Effect,fill = 0.5 - abs(0.5 - stat(ecdf))))+
   theme_bw()+xlab("Standardized coefficient estimate")+ylab("Predictor")+
   scale_x_continuous(breaks=c(-2,0,2),limits=c(-3,3))+
   #ggtitle("Predictors of the number of patrols (dorias)")+
-  scale_y_discrete(breaks=c(names(postdf)[97:102]),
-                   labels=c("Male","Mangroves\ndeclining","Theft","Mangrove size","REDD","Committee\nmember"))+
+  scale_y_discrete(breaks=c(names(postdf)[c(97:99,101:102)]),
+                   labels=c("Male","Mangroves\ndeclining","Theft","REDD","Committee\nmember"))+
   mytheme
 
 
@@ -117,30 +122,54 @@ ggplot(postdfNB,aes(x=Estimate,y=Effect,fill = 0.5 - abs(0.5 - stat(ecdf))))+
 #######
 
 
+#regular parameter plots
 
-dd<-as.data.frame(post$Eff1NB)
-names(dd)<-unique(as.factor(dat$R ))
-dd<-gather(dd,key="REDD",value="Estimate")
-
-
-
-#slope2
-dd%>%
-  mutate(REDD=as.factor(REDD))%>%
-  group_by(REDD)%>%
+#BERN Pars
+postdfBERN%>%
+  group_by(Effect)%>%
   summarise(lower=quantile(Estimate,.25),
             upper=quantile(Estimate,.75),
             top = quantile(Estimate,.95),
             bottom = quantile(Estimate,.05),
             mid=quantile(Estimate,.5))%>%
-  ggplot(., aes(y = mid ,x=REDD,ymin=lower,ymax=upper))+ggtitle("")+#maybe put A/B here for panel lable
-  geom_linerange( mapping=aes(x=REDD, ymin=bottom, ymax=top), size=0.25,position = position_dodge(width = 0.5),alpha=0.8) +##change deets
-  geom_pointrange(position = position_dodge(width = 0.5),size=1,alpha=0.8)+
+  ggplot(., aes(y = mid ,x=Effect,ymin=lower,ymax=upper))+ggtitle("")+#maybe put A/B here for panel lable
+  geom_linerange( mapping=aes(x=Effect, ymin=bottom, ymax=top), size=0.5,position = position_dodge(width = 0.5),alpha=0.8) +##change deets
+  geom_pointrange(position = position_dodge(width = 0.5),size=1.2,alpha=0.99)+
+  scale_y_continuous(breaks=c(-2,0,2),limits=c(-2.2,2.2))+
+  scale_x_discrete(breaks=c(names(postdf)[c(92:93,95:97)]),
+                   labels=c("Mangroves\ndeclining","Theft","REDD","Committee\nmember","Male"))+
   coord_flip(clip = "off")+geom_hline(yintercept=0,linetype="dashed",color="darkgrey" )+
-  theme_classic()+theme(strip.background = element_blank(),
-                                strip.text.x = element_blank())
+  ggthemes::theme_clean()+theme(text=element_text(  family="Comic Sans MS", face= "plain"),
+                                axis.text.y  = element_text(face= "plain"),
+                                axis.title = element_text(color="black",size=20),
+                                axis.text=element_text(color="black",size=15))+
+  ylab("Standardized coefficient estimate")+xlab("Predictor")
+
+#NB Pars
+postdfNB%>%
+  group_by(Effect)%>%
+  summarise(lower=quantile(Estimate,.25),
+            upper=quantile(Estimate,.75),
+            top = quantile(Estimate,.95),
+            bottom = quantile(Estimate,.05),
+            mid=quantile(Estimate,.5))%>%
+  ggplot(., aes(y = mid ,x=Effect,ymin=lower,ymax=upper))+ggtitle("")+#maybe put A/B here for panel lable
+  geom_linerange( mapping=aes(x=Effect, ymin=bottom, ymax=top), size=0.5,position = position_dodge(width = 0.5),alpha=0.8) +##change deets
+  geom_pointrange(position = position_dodge(width = 0.5),size=1.2,alpha=0.99)+
+  scale_y_continuous(breaks=c(-2,0,2),limits=c(-2.2,2.2))+
+  scale_x_discrete(breaks=c(names(postdf)[c(98:99,101:103)]),
+                   labels=c("Mangroves\ndeclining","Theft","REDD","Committee\nmember","Male"))+
+  coord_flip(clip = "off")+geom_hline(yintercept=0,linetype="dashed",color="darkgrey" )+
+  ggthemes::theme_clean()+theme(text=element_text(  family="Comic Sans MS", face= "plain"),
+                        axis.text.y  = element_text(face= "plain"),
+                        axis.title = element_text(color="black",size=20),
+                        axis.text=element_text(color="black",size=15))+
+  ylab("Standardized coefficient estimate")+xlab("Predictor")
 
 
+###
+
+#Make more standard coefficient plots
 
 
 
@@ -168,4 +197,24 @@ plot(dat$Y~ dat$IND)
 lines(colMeans(out[[1]]) ~ c(x.seq))
 lines(colMeans(out[[2]]) ~ c(x.seq))
 #####
+rowMeans(postdf[,5:47])
+
+
+#Median likelihood that womwn engage in patrols. Change 0 to 1 for men
+median(rethinking::inv_logit(postdf$IntBern+rowMeans(postdf[,5:47])+
+                        postdf$EffDeclBern *mean(df2$Decl)+postdf$EffTheftBern*mean(df2$Theft)+
+                        postdf$EffAreaBern *mean(df2$Area)+postdf$EffREDDBern*mean(df2$REDD)+
+                        postdf$EffMembBern *mean(df2$Memb)+postdf$EffGenBern*0))
+
+
+#this doesnt work below!! I tdont think..
+mu<-exp(postdf$IntNB+rowMeans(postdf[,49:90])+
+  postdf$EffDeclNB *mean(df2$Decl)+postdf$EffTheftNB*mean(df2$Theft)+
+  postdf$EffAreaNB *mean(df2$Area)+postdf$EffREDDNB*mean(df2$REDD)+
+  postdf$EffMembNB *mean(df2$Memb)+postdf$EffGenNB*0)
+
+
+estty<-rnbinom(n=length(mu),mu=mu,size=postdf$phi)
+estty<-ifelse(estty>0,estty,NA)
+mean(estty,na.rm=T)
 

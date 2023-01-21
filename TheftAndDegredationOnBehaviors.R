@@ -52,16 +52,22 @@ fit2Int<-brm(BundlesAbleToCollect230~stdOutsidersCutting*stdMangPercDecl+Occupat
                                 stdMangArea+CommmitteeMem+
                          REDDP+(1|Shehia314),family="poisson",data=df,prior = prior )
 
-bayesplot::color_scheme_set("darkgray")
-mcmc_plot(fit2Int, variable = c("Out","Mang","REDD"), regex = TRUE)+theme_bw()+mytheme+
+bayesplot::color_scheme_set("black")
+mcmc_plot(fit2Int, variable = c("Out","MangPerc","REDD"), regex = TRUE)+
+  ggthemes::theme_clean()+mytheme+
   geom_vline(xintercept=0,linetype=1,color="white")+
   geom_vline(xintercept=0,linetype=2,color="black")+
   scale_y_discrete(labels=c("Theft","Theft:Mangroves\ndeclining","Mangroves\ndeclining",
-                            "Mangrove size","REDD"))+xlab("Standardized coefficient estimate")+
+                            "REDD"))+xlab("Standardized coefficient estimate")+
   theme(text=element_text(  family="Comic Sans MS", face= "plain"),
         axis.text.y  = element_text(face= "plain"),
         axis.title = element_text(color="black",size=20),
         axis.text=element_text(color="black",size=15))+ylab("Predictor")
+
+
+
+
+
 
 
 #get probability that effects are +/-

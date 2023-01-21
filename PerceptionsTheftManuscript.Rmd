@@ -1,0 +1,238 @@
+---
+title: Quantifying Local Perceptions of Environmental Change and Links to Community-Based
+  Conservation Practices
+author:
+- affiliation: Boise State University - Human Environment Systems
+  name: Matt Clark
+- affiliation: Revolutionary Government of Zanzibar Department of Forestry
+  name: Haji Massoud Hamad
+- affiliation: Max Planck Institute for Evolutionary Anthropology
+  name: Jeffrey Andrews
+- affiliation: Boise State University - Human Environment Systems
+  name: Vicken Hillis
+- affiliation: Max Planck Institute for Evolutionary Anthropology
+  name: Monique Borgerhoff Mulder
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
+    latex_engine: pdflatex
+    template: ~/SmokeProject/MarkdownDocuments/MillerTemplate.tex
+  word_document: default
+  html_document:
+    df_print: paged
+bibliography: ../PerceptionsofEnvironmentalChange.bib
+abstract: Approximately two billion people — a quarter of the earth’s population — directly harvest forest products to meet their daily needs. These individuals disproportionately experience the impacts of increasing climatic variability and global biodiversity loss, and must disproportionately alter their behaviors in response to these impacts. Much of the increasingly ambitious global conservation agenda relies on voluntary uptake of conservation behaviors in such populations. Thus, it is critical to understand if and how individuals in these communities perceive environmental change and use conservation practices as a tool to protect their well-being. To date however, there have been no quantitative studies of how individual perceptions of forest change and its cause(s) shape real-world conservation behaviors in forest dependent populations. Here we use a novel participatory mapping activity to elicit spatially explicit perceptions of forest change and its drivers across 43 mangrove-dependent communities in Pemba, Tanzania. We show that perceptions of mangrove decline drive individuals to propose stricter limits in fuelwood harvests from community forests only if they believe that the resultant gains in mangrove cover will not be stolen by outsiders. Conversely, individuals who believe their community mangrove forests are at high risk of theft actually decrease their support for forest conservation in response to perceived forest decline. High rates of inter-group competition and mangrove loss are thus driving a ‘race to the bottom’ phenomenon in community forests in this system. This finding demonstrates a mechanism by which increasing environmental decline may cause communities to forgo conservation practices, rather than adopt them, as is often assumed in much community-based conservation planning. However, we also show that when effective boundaries are present, individuals are willing to limit their own harvests to support group conservation goals.
+fontsize: 12pt
+link-citations: yes
+keywords: Community-based conservation, Mangroves, Environmental change, Participatory
+  mapping
+header-includes:
+- \usepackage{pdfpages}
+- \usepackage[font={footnotesize}]{caption}
+- \usepackage{bm}
+- \usepackage{amsmath}
+---
+
+```{r packages, include=FALSE, cache=FALSE, message=FALSE, warning=FALSE}
+#
+library(knitr)
+library(rmarkdown)
+library(bookdown)
+library(formattable)
+library(kableExtra)
+library(dplyr)
+library(magrittr)
+library(prettydoc)
+library(htmltools)
+library(knitcitations)
+library(devtools)
+library(tidyverse)
+library(scales)
+library(extrafont)
+```
+
+```{r setup, include=FALSE, cache=TRUE, message = FALSE, warning=FALSE}
+# Chunk options: see http://yihui.name/knitr/options/ ###
+
+## Text results
+#opts_chunk$set(echo = TRUE, warning = TRUE, message = TRUE, include = TRUE)
+
+## Code decoration
+#opts_chunk$set(tidy = TRUE, tidy.opts = list(blank = FALSE, width.cutoff = 60), highlight = TRUE)
+
+## Caching code
+knitr::opts_chunk$set(cache = 2, cache.path = "Cache/")
+
+## Plots
+#opts_chunk$set(fig.path = "Figures_MS/", dev=c('pdf', 'png'), dpi = 300)
+
+## Locate figures as close as possible to requested position (=code)
+knitr::opts_chunk$set(fig.pos = 'H')
+
+#setwd("C:/Users/Matt/Documents/Pemba_Project/ParticipatoryMapping")
+```
+
+# 1 - Introduction
+
+## 1.1 - Problem statament
+Diverse and healthy ecosystems are unequivocally our best insurance against the worsening impacts of climate change [@isbell_biodiversity_2015; @loreau_biodiversity_2001; @oliver_biodiversity_2015; @lloret_extreme_2012]. Yet, increasingly intensive resource extraction from ecosystems over the last 150 years has greatly attenuated their ability to buffer human communities against impacts such as fires and flooding [@parks_how_2016; @alongi_mangrove_2008]. Simultaneously, this switch from low to high intensity resource use has diminished global biodiversity on a magnitude only seen five other times in our planet’s history, further accelerating climate change [@caro_inconvenient_2022].  
+
+Recent land use intensification strongly reflects the displacement of local communities and traditional practices by large-scale producers and outside economies [@stephens_archaeological_2019; @ellis_people_2021;@bird_variability_2019]. Effective and equitable conservation efforts now largely recognize the need to empower local communities to set resource management priorities and design strategies to achieve them [@fernandez-llamazares_reframing_2020; @garnett_spatial_2018]. Thus, achieving global conservation goals hinges, at least in part, on local community engagement and the decisions that individuals in those communities make in the environment [@gatiso_if_2018]. 
+
+Numerous studies have shown that resource users can reliably detect long-term changes in their local environments [@lauer_indigenous_2010; @early-capistran_integrating_2022; @tengo_local_2004-1]. However, our understanding of if and how individuals choose to limit resource use, restore ecosystems, or otherwise change their behaviors in response to such change is limited [@paloniemi_integrating_2018]. In particular, as pointed out by Meyfroidt [-@meyfroidt_environmental_2013], few studies have linked individual perceptions of threats and change in natural resources with observed conservation behaviors and preferences [although see @nyangoko_community_2022]. Further, a recent systematic review of 128 studies of voluntary adoption of conservation behaviors showed a dearth of research on the subject in non-Western populations [@thomas-walters_systematic_2022]. 
+
+In her foundational work, Elinor Ostrom described a set of conditions that, when met, promote cooperative behaviors in natural resource management settings [@ostrom_governing_1990]. Among these conditions, Ostrom identifies the need to clearly demarcate and enforce proprietary access to group resources through physical and/or social boundaries [@ostrom_governing_1990]. Three decades of scrutiny via case studies and meta analyses from across the globe further cement this intuition [@cox_review_2010; @cox_understanding_2014; @cumming_advancing_2020]. In a recent set of theoretical models, Andrews and others [-@andrews_adaptive_2022; -@andrews_evolving_2023] delineate the social-ecological evolutionary mechanisms by which excluding outsiders promotes sustainable resource management behavior and cooperation in the face of threats to the local environment. However, the reverse is also true. These models show that in the absence of strong social or physical boundaries, perceived degradation of local resources may cause a ‘race to the bottom’ phenomenon where individuals are incentivized to extract all they can before the resource is gone [@andrews_evolving_2023]. 
+
+Current theory explicitly predicts that environmental degradation should promote preferences for limiting resource extraction when theft from outsiders is low. And degradation should conversely promote preferences for increasing resource extraction when theft from outsiders is high, because the gains made by sustainable management may be eroded by outsiders and never realized by the local community [@andrews_evolving_2023]. This process has however not yet been examined empirically. An empirical test of these mechanisms is critical for building further theory in conservation science and for applying scientific insights to real-world resource management. For example, individuals make resource management decisions under the backdrop of past exposure to external conservation interventions and within a range of acceptable community norms [@hayes_effectiveness_2022; @gomez-baggethun_economic_2011]. Thus, we must observe how theorized processes of behavioral change in response to environmental degradation operate in the real-world in order to have confidence in their general importance and applicability.  
+
+In this study, we perform an empirical test of the hypothesis that perceived environmental degradation will increase individual support for conservation only in the presence of effective social or physical resource boundaries. We use a novel participatory mapping activity to collect quantitative, spatially explicit perceptions of mangrove cover change in Pemba, Tanzania, which we link with a questionnaire of individual perceptions of mangrove theft and self-reports of conservation behaviors. Specifically, we ask respondents if, and how often they perform patrols to protect community mangroves from outsiders and to indicate their preferred harvest limits for fuelwood from these forests for community members. Thus, this research explicitly tests how perceptions of resource change interact with perceived efficacy of resource boundaries to shape conservation behaviors in the community mangrove forests of Pemba.
+
+## 1.2 - Field site
+This study examines community-based mangrove conservation in Pemba Island, Tanzania, the smaller of the two Zanzibari islands, identified as part of the Coastal Forests of Eastern Africa biodiversity hotspot. We briefly discuss the history of conservation programming on the island as it directly affects the inference in our study. Like much of the developing world, Pemba has been subject to a series of conservation initiatives that stretch back to the colonial period, with novel initiatives increasing in frequency since the late 1990s. These begin with British colonial afforestation programs and the gazetting of forest reserves by both the British and post-revolutionary governments in the 1960s [@chachage_environment_2000]. Following 50 more years of initiatives driven by a number of Scandinavian countries, in 2010 the Reduced Emissions from Deforestation and Land Degradation program (REDD+) identified 18 wards (*shehia*) in Pemba as appropriate for piloting their payments for ecosystem services conservation framework [@burgess_getting_2010; @rgz_forest_1996; @united_nations_rio_1992]. The REDD+ project intended to pay communities to forego harvesting fuelwood and timber inside of designated areas in each of the 18 selected shehia. The objective of such interventions is to slow deforestation, reduce greenhouse gas emissions, and reduce poverty. While hope for this project waxed and waned over several years, these payments were never delivered and the 18 selected shehia ultimately showed no measurable benefit in forest cover [@andrews_does_2021; @collins_how_2022]. 
+
+Alongside the proliferation and succession of these conservation projects, the population on the island has grown by approximately 2.1% each year (about double the global average), increasing the need for the production of timber, fuelwood, and other forest products. Prior research shows that approximately 90% of rural Pemban households rely exclusively on forest products (fuelwood and charcoal) to meet their daily cooking needs [@rgz_zanzibars_2014; @ely_participatory_2000]. Further, these forest products account for 27% of total household income [@andrews_forest_2022]. This local need for forest products is driving a median deforestation rate of 3.4% per year in the forests of the island [@collins_how_2022].
+
+There exists a general conservation ethic across Pemba, driven in large part by the recognition that forests provide valuable ecosystem services such as erosion control, among many others. Thus there is a conflict between the desire to safeguard local community forests, while still meeting daily needs. We find extensive evidence that individuals adapt to this challenge by stealing forest products from the community forests of other shehia; 70% of residents blamed their neighboring shehia for deforestation of their own local forests, and 31% of residents report having whole trees cut and stolen by outsiders [@borgerhoff_mulder_silver_2021 and unpublished data 2017]. 
+
+Widespread cutting of mangroves in particular has caused considerable decline of mangrove cover and resultant flooding in many mangrove adjacent communities [@andrews_forest_2022].
+As there are no official harvest limits or laws prohibiting travel to other communities to harvest (or “steal”) mangroves, many communities and members therein have taken this job upon themselves. This generally takes the form of the establishment of village and shehia conservation committees, mangrove patrols to exclude outsiders from harvesting from community mangroves, mangrove planting, and limiting harvests from community mangroves. There is nevertheless considerable variability in preferences and practices of these actions on the island, both between and within shehia [@borgerhoff_mulder_silver_2021]. We use this variability in individual preferences for limiting harvests and patrolling behavior as the outcomes of interest in this analysis.
+
+# 2 - Methods
+## 2.1 - Data collection
+### 2.1.1 - Participatory mapping activity
+We collected data on individual perceptions of environmental change using a participatory mapping methodology in order to elicit fine-scale, spatially explicit perceptions of change. This methodology builds on that of Herrmann et al. [-@herrmann_people_2014] to tangibly link participant responses with specific locations and provide a more accurate measure than would be possible with a simple questionnaire [@emmel_participatory_2008; @cadag_integrating_2012]. We randomly selected five men and five women from each of 43 shehia across Pemba (Fig. 1) to participate in this activity, which resulted in a final sample size of 423 after dropping seven responses due to incomplete survey information.
+
+![Wards (*shehia*) surveyed in this study. Large map shows the island of Pemba, Tanzania with each of the shehia where data were collected for this study shaded in blue. Inset map shows the location of Pemba in relation to the Tanzanian mainland.](../Figures/Map.png)
+
+The participatory mapping activity began with a workshop format where we established a shared understanding of our goals and did a simple mapping orientation, as most of the local population does not regularly use maps to navigate their environment. Each participant was then provided with a gridded basemap of their community, with towns, roads, bodies of water, cultural landmarks (e.g. mosques), and any protected areas labeled to help with orientation. Each grid cell corresponded to 0.5 km2 area. After a further orientation we asked participants to identify their own place of residence and other important locations to verify their basic understanding of the map. The final group task was to mark (initially with buttons until consensus was reached, then with a pen) each grid cell where mangrove forest is present. Thus, the workshop-style component of the participatory mapping activity ended once each participant was adequately oriented to a gridded map of their community, and each grid containing mangrove forest was marked identically across all participant maps (Fig. 2). 
+
+For the remainder of the participatory mapping activity and the questionnaire following, all participants responded individually. With the consensus map of mangrove locations in-hand, each participant was asked to indicate, for each grid cell containing mangrove, whether they felt the tree cover in that area had increased, stayed the same, or decreased in the last year. Participants could also indicate that they were not sure about how mangrove cover had changed. An example of a completed map can be found in figure S1. The total number of grid cells in which a participant indicated that the mangrove cover had declined in the last year was tallied to produce an estimate of the perceived percent decline in community mangrove forest cover for each respondent.
+
+![Example of the participatory mapping activity used in this study. Grid squares containing mangrove cover are first identified as a group, then respondents individually record their perceived change in each square. Photo shows H. M. Hamad explaining the individual response portion of the activity.](../Figures/GoodPhotoHaj_defaced.png)
+
+### 2.1.2 - Questionnaire
+Following the participatory mapping activity all participants completed an individual questionnaire with the help of research staff. The purpose of this questionnaire was to elicit responses regarding conservation behavior and preferences, perceived pressure of theft from outsiders, and general demographic information. Specifically, participants used a binary response to indicate whether or not they ever engage in patrols to protect community mangrove forests from theft from outsiders. If yes, participants listed the number of mangrove patrols that they estimated they had performed in the past month. Participants also indicated their preferences’ for harvest limits on themselves and other community members who rely on community mangroves to collect fuelwood. This outcome variable was collected as an integer value corresponding to the number of fuelwood bundles that they would like to limit themselves and their fellow community members to harvesting each month. 
+
+To quantify individuals’ perceptions of theft from outsiders in their community mangroves, we asked respondents to estimate the number of outsiders they believe come to their shehia to harvest fuelwood each week. We asked participants to provide their best guess of where these individuals generally come from in order to ensure they were describing individuals from outside their shehia, rather than a smaller village-level group. Finally, we recorded the gender and occupation of each participant through multiple choice questions and asked whether they were a member of a village or shehia conservation committee using a binary choice question.
+\newline
+
+![ ](../Figures/Table1.png)
+
+## 2.2 - Analysis
+We performed two separate analyses in this research. The first (model 1) was designed to estimate the effects of perceived decline of community mangroves and perceived mangrove theft on preferences for in-group harvest limits on fuelwood. In accordance with current best practices for causal inference, we constructed a directed acyclic graph to determine what parameters needed to be controlled for in order to estimate the direct effects of interest (Table 1 & Fig. S2a) [@mcelreath_statistical_2020; @westreich_table_2013]. This process allows us to accurately describe the complete causal pathway between our predictors and outcome of interest, while controlling for other variables that may be affecting the outcome through a separate causal path [@pearl_causality_2009]. 
+
+We used a Poisson distributed generalized linear mixed-model operationalized in a Bayesian framework to estimate the direct effects of interest (estimands) (Table 1). We estimate the effect of the interaction between perceived mangrove loss and the theft pressure from outsiders on community mangrove forests. As identified through the directed acyclic graph procedure, we control for participant occupation, the size of the community mangrove area, whether or not the participant was a member of a village or shehia conservation committee, and whether the shehia was one of the 18 exposed to the failed REDD+ intervention on the island. Finally, as we used a mixed model, we estimated a varying intercept ($\boldsymbol{\beta0}_{j}$) for each of the 43 study shehia. This model is formalized in equation 1.
+
+\begin{gather}
+\text{Y}_{ij} \sim Poisson(\mu_{ij}) \nonumber\\ \nonumber\\
+\mu_{ij} = \text{exp}(\alpha0+\boldsymbol{\beta0}_{j}+\beta1\cdot\text{Theft}_{i}+
+               \beta2\cdot\text{MangDecl}_{i}+\beta3\cdot\text{MangArea}_{i}+\\ \beta4\cdot\text{REDD}_{i}+\nonumber
+              \beta5\cdot\text{Occupation}_{i}+\beta6\cdot\text{CommitteeMemb}_{i})\nonumber\\\nonumber
+\end{gather}
+
+The secondary analysis for this research (model 2) estimated the effects of perceived mangrove theft from outsiders and forest cover loss on reported respondent engagement in community mangrove patrols. To adequately model the data generating process for participation in community mangrove patrols, we operationalized this research question as a *hurdle* process [@zuur_zero-truncated_2009]. In this framework, we model the joint outcome of whether or not a respondent is likely to report engaging in mangrove patrols at all (Bernouli distributed with probability $\theta$) and if so, the number of patrols that they report engaging in each month (zero-truncated negative binomial distribution with mean $\mu$ and dispersion $\phi$). Thus, the probability mass function is shown in equation 2.    
+
+\begin{equation}
+\text{P}_{HurdleNegBinom}(y|\pi,\mu,\theta)= 
+  \begin{cases} 
+
+\pi, 
+& y=0 \\ \\
+(1-\pi) \cdot \text{P}_{ZeroTruncNegBinom}(y|\mu,\theta), & y>0 
+
+\end{cases}
+\end{equation}
+
+Again, for this analysis, we selected the parameter set necessary to estimate the direct effects of interest using a directed acyclic graph procedure (S2b). Through this procedure, we concluded that to estimate the effect of perceived theft and forest loss on patrolling behavior, we must account for the size of the community mangrove area, the gender of the participant, whether or not the participant was a member of a village or shehia conservation committee, and whether the shehia was one of the 18 subjected to the failed REDD+ intervention on the island. In this model we substitute gender for participant occupation because gender affects both occupation and patrolling behavior, thus including both gender and occupation would result in estimating the effect of gender along two separate causal paths. In model 1 we do not assume that participant gender should affect their preferences for in-group harvest limits. We again used a Bayesian mixed-model, where we estimate a varying intercept for each of the 43 shehia in our study ($\boldsymbol{\beta0}_{j}^\eta$ & $\boldsymbol{\beta0}_{j}^\mu$). This model is formalized in equation 3.   
+
+\begin{gather}
+\text{Y}_{ij} \sim HurdleNegBinom(\pi_{ij},\mu_{ij},\phi)   \nonumber \\ \nonumber \\ \nonumber
+\pi_{ij} = \frac{\text{exp}(\eta_{ij})}{1+\text{exp}(\eta_{ij})} \nonumber\\ \nonumber\\
+\eta_{ij} = \alpha0^\eta+\boldsymbol{\beta0}_{j}^\eta+\beta1^\eta\cdot\text{Theft}_{i}+
+  \beta2^\eta\cdot\text{MangDecl}_{i}+\beta3^\eta\cdot\text{MangArea}_{i}+\nonumber\\ \beta4^\eta\cdot\text{REDD}_{i}+
+  \beta5^\eta\cdot\text{Gender}_{i}+\beta6^\eta\cdot\text{CommitteeMemb}_{i}\\ \nonumber\\
+\mu_{ij} = 
+  \text{exp}(\alpha0^\mu+\boldsymbol{\beta0}_{j}^\mu+\beta1^\mu\cdot\text{Theft}_{i}+
+               \beta2^\mu\cdot\text{MangDecl}_{i}+\beta3^\mu\cdot\text{MangArea}_{i}+\nonumber\\ \beta4^\mu\cdot\text{REDD}_{i}+
+               \beta5^\mu\cdot\text{Gender}_{i}+\beta6^\mu\cdot\text{CommitteeMemb}_{i}) \nonumber\\ \nonumber\\
+ \boldsymbol{\beta0}_{j} \sim Norm(0,\sigma) \nonumber
+\end{gather}
+
+For both models, we used regularizing priors as recommended by Gelman et al. [-@gelman_weakly_2008] for producing conservative coefficient estimates. Both models exhibited adequate convergence of Markov chains, adequate posterior predictive capacity, and $\hat{R}$ values equal to 1 for all coefficients (S3). All data for this project and the R and STAN code used in these models is available in the Open Science section.
+
+# 3 - Results
+As this is a Bayesian analysis, we consider any effect in which the inner 0.9 quantile of model estimates does not overlap zero to be statistically significant. This threshold is standard in the literature as it produces stable estimates and indicates that 95% or greater of the entire probability mass of sample estimates sit on one side of zero and therefore a 0.95 probability of a true effect given the data [@goodrich_rstanarm_2020].
+
+## 3.1 - Preferences for fuelwood harvest limits
+We find strong evidence that the interaction between individual perceptions of mangrove degradation and perceptions of mangrove theft from outsiders significantly affects preferences for fuelwood harvest limits from community mangroves. Two thousand draws from the posterior distribution indicated a 0.98 probability that the interaction term has a positive effect on the outcome (Fig. 3). In respondents who reported no perceived theft in their community mangrove forests, an increase in perceived mangrove decline from loss in 0% of the community mangrove area to 50% of the area, resulted in an expected decrease in preferred harvest limits from 2.73 to 2.36 bundles of fuelwood. When 100% of community mangroves were reported as declining in cover, the expected preference for fuelwood harvest limits among these respondents decreased to 2.04 bundles.  
+
+![Standardized posterior estimates from the model shown in equation 1 used to estimate the drivers of preferences for limiting fuelwood use. The thick bars show the inner 50% of the posterior distribution and the thin bars show the inner 90% of the posterior distribution (credibility interval).](../Figures/InteractionPosteriorPlot.png)
+
+The significance of the interaction term indicates that this trend is reversed in individuals who perceive high levels of mangrove theft from outsiders. In these respondents, an increase in perceived mangrove decline from 0% to 50% of the community mangrove area resulted in a loosening of preferred harvest limits from 1.24 bundles of fuelwood to 2.73. Interestingly, the strength of this trend increased as more of the mangrove area was perceived as being in decline. Respondents who perceive the highest levels of theft and report that 100% of the community mangrove area is declining are expected to report a preference for a harvest limit of 6.07 bundles, a nearly five fold increase from those who perceive that 0% of the community mangrove area is in decline. The marginal effect of this interaction term given a mean value of all other predictors can be seen in figure 4.    
+
+![Marginal effect of the interaction of individual perception of mangrove decline and perceived inter-group theft on individual preference for in-group fuel-wood harvest limits. Low theft shows the effect of perceived mangrove decline when perceived theft was  near 0 and high theft shows the effect when perceived theft was at the highest recorded value. The marginal effect shows the effect of these predictors at a mean value of all other predictors. Black lines show median model estimates. Shading those the credibility interval.](../Figures/InGroupReg.png)
+
+Finally, shehia who were part of the failed REDD+ initiative on the island showed a slight, although statistically insignificant, increase in preferred harvest limits compared to individuals in shehia where the REDD+ project was never introduced (Fig. 3). This effect is not statistically significant as the proportion of samples greater than zero is 0.79, representing a 0.79 probability of a true effect given our data.   
+
+## 3.2 - Mangrove patrolling behavior
+The coefficient estimates from the regression described in equation 3 show that patrolling behavior is likely driven by different processes than are preferences for restricting fuelwood harvests. The Bernoulli component of the model indicates that neither perceived mangrove theft or perceived mangrove decline significantly affected whether or not individuals reported engaging in mangrove patrols at all. The posterior distribution of the Bernoulli component of the model resulted in a statistically insignificant 0.87 probability that perceived theft increases the likelihood that individuals engage in mangrove patrols. This model showed virtually no effect of perceived mangrove decline on the likelihood of patrolling behavior (Fig. 5). This intuition is paralleled by the zero-truncated negative binomial component of the model which estimated the effect of these predictors on the reported number of patrols that individuals engaged in, if they engaged in them at all. This model component demonstrates that both perceived theft and perceived mangrove decline had virtually no effect on the number of mangrove patrols that individuals reported engaging in (Fig. 6).
+
+![Standardized posterior estimates for the Bernoulli component of the model estimating the effect of these predictors on patrolling behavior (eq. 3). The Bernoulli component estimates the effect that the predictors have on whether or not individuals engage in patrolling behavior at all. The thick bars show the inner 50% of the posterior distribution and the thin bars show the inner 90% of the posterior distribution (credibility interval).](../Figures/BernouliParsV2.png)
+
+In both the component of the model measuring whether individuals report going on patrols at all and the component measuring the number of patrols they report engaging in, the gender of the respondent was significantly associated with the outcome (Fig. 5 & 6). Given a mean value for all other predictors, the probability that women reported engaging in patrols at all was 0.17 and the probability that men reported engaging in patrols at all was 0.38. Lastly, membership in a shehia or village conservation committee was significantly associated with individuals reporting going on patrols at all (Fig. 5), but was not significantly associated with the number of patrols they reported engaging in, as only 91% of model estimates were greater than 0 (Fig. 6). 
+
+![Standardized posterior estimates for the zero-truncated negative binomial component of the model estimating the effect of these predictors on patrolling behavior. The zero-truncated negative binomial component estimates the effect that the predictors have on the number of patrols that individuals engage in. The thick bars show the inner 50% of the posterior distribution and the thin bars show the inner 90% of the posterior distribution (credibility interval).](../Figures/NBParsV2.png)
+
+The outputs of this model also indicate that past community exposure to REDD+ significantly decreased the probability of individual engagement in mangrove patrols. Specifically, there is a 0.96 probability that individuals from shehia selected for the failed REDD+ project were less likely to engage in mangrove patrols at all compared to those from shehia not exposed to the REDD+ project (Fig. 5). This predictor was not significantly associated with the number of patrols that individuals engaged in (Fig. 6).
+
+# 4 - Discussion
+## 4.1 - Relation & deviation from theory
+In this research, we sought to test the theory that individual perception of environmental degradation will result in increased participation and support for conservation, only if the benefits of such conservation behaviors are not diminished by a lack of effective boundaries. Our data strongly support this intuition and furthermore show that perceived environmental degradation can actually decrease support for conservation if the threat of out-group freeriders is high. Thus, this finding, in combination with the theoretical development by Andrews et al. [-@andrews_adaptive_2022; -@andrews_evolving_2023], helps to detail the mechanisms underlying Ostrom’s first tenet that reliable boundaries are critical for sustainable common-pool resource management.  
+
+This research begins to fill the gap identified by Meyfroidt [-@meyfroidt_environmental_2013], in which little is known about how individuals use conservation behaviors to respond to perceived environmental change. We show here that different mechanisms likely drive different types of conservation behaviors. In assessing preferences for fuelwood harvest limits versus patrolling behavior, a differing set of important predictors emerged. We show that in conducting mangrove patrols, individuals are unlikely to break community norms to safeguard their community resources. For example, women were much less likely to report engaging in mangrove patrols than men, even if they had identical perceptions of mangrove theft and decline, and a similar history with conservation programming. Additionally, patrolling is largely conducted by members of a village or shehia conservation committee; non-committee members were unlikely to begin engaging in this behavior solely on their own accord. This insight may be broadly applicable to the growing body of literature on the adoption of conservation behaviors [e.g. @mahajan_theorybased_2020; @mills_how_2019; @clark_quantitative_2022]. This field may benefit by defining categories of conservation behaviors such as ‘in-group regulatory behaviors’ and ‘out-group exclusionary behaviors,’ among many possible others.
+  
+One interesting and somewhat unexpected important predictor emerged for both determining preferences for fuelwood harvest limits and mangrove patrolling behaviors. Past community exposure to the failed REDD+ project on the island was significantly associated with reduced probability of engagement in mangrove patrols, and showed a non-significant (p=0.79), yet interesting association with individual preferences for fuelwood harvest limits. We hesitate to draw strong conclusions given these data, as this effect was not the primary question of the study [@tredennick_practical_2021]. Yet, these trends are well aligned with theories regarding motivational crowding [@rode_motivation_2015; @frey_motivation_2001]. Along these lines, we speculate that past promises of payments for conservation behaviors, such as reducing fuelwood use and community forest patrols, may have crowded out individuals’ motivations to engage in such behaviors in the absence of payments. Although there are other indications from a larger sample of individuals and broader environmental context (not limited to mangroves) that preferences for conservation do persist in communities exposed to the REDD+ intervention (WTA paper).
+
+## 4.2 - Policy implications
+As the negative impacts of climate change continue to affect communities of small-scale producers around the world, nature-based solutions, such as mangrove protection and restoration, are increasingly posited to buffer individuals against the worst impacts [@cohen-shacham_nature-based_2016; @cohen-shacham_core_2019]. We show here that the uptake of nature-based solutions may be greatly hindered by a lack of clear social or physical boundaries to protect the benefits accrued by such actions. Thus, our results suggest that in supporting communities to engage in community-based conservation actions, top-down support for boundaries may greatly increase the efficacy of an intervention and may even be necessary. Actions to exclude out-group members from community resources are costly. Our results show that they are so costly, that in fact, even when individuals perceive them as necessary, they will not perform them without some degree of social license (e.g. membership in a shehia conservation committee). Finally, this study suggests that even in largely community-driven programs to combat the negative impacts of climate change through conservation, outside entities should consider providing funding specifically for communities to demarcate and protect resource boundaries. Such a policy may have dual benefits, directly stopping harvests from outsiders and supporting the endogenous emergence of sustainable in-group norms.
+
+When effective boundaries exist, we show that individuals respond to perceived environmental degradation by supporting stricter limits on resource harvests. This result is promising for the prospect of meeting global conservation goals through community-based initiatives. The status of many resources are, however, not easily observable to local communities and even observed changes may be forgotten as individuals’ baselines for resource condition shift [@papworth_evidence_2009]. We emphasize then that supporting communities in effectively monitoring both local resources and the social benefits gained from protecting them is critical for the success of community-based conservation [@jones_why_2013; @salerno_adaptation_2021].
+ 
+## 4.3 - Limitations and future work
+A key limitation of this work is that we rely on self-reported conservation preferences and behaviors for our outcomes of interest. The insights provided here would be bolstered if the realized conservation behaviors of participants could be observed. Future work might perform a similar participatory mapping activity with a random sample of a community after researchers host a tree planting activity or other conservation oriented event. Researchers may then record whether or not respondents attended the tree planting activity. 
+
+Conservation science would also benefit from a comprehensive examination of the effect that failed or terminated conservation projects, such as the REDD+ initiative on Pemba Island, have on local conservation preferences and behaviors [eg. @chervier_when_2019; @massarella_redd_2018]. Our results shown here are exploratory as this phenomenon was not the intended subject of study, but they may be an early signal of an important trend. Further, our measure of REDD+ exposure was at the community level, whether or not the shehia was one of the 18 selected for the intervention, and our outcomes were at the individual level. This finding would be strengthened by measuring individual exposure to REDD+ at the individual level as well. 
+
+# 5 - Conclusion
+In this paper we uncovered an important interaction between perceptions of environmental degradation and exposure to resource theft on two different types of conservation behaviors (harvest limits and community patrols). Put simply, individuals who are not exposed to theft while simultaneously experiencing resource decline are motivated to protect that dwindling resource. In contrast, individuals who *are* exposed to high levels of theft while simultaneously experiencing resource decline are motivated to actually *weaken* harvest limits, presumably in a race to grab what they can while it's still available.
+
+We also show that perceived mangrove degradation and theft from outsiders do not significantly affect individual engagement in patrols to exclude outsiders from stealing mangroves from community forests. Instead, this behavior is performed only by specific members of the community. Thus, as theft increases between communities, there is little mechanism to reduce it. And as theft is left largely unregulated, the ‘race to the bottom’ phenomenon causes in-group members to also harvest rapidly from community forests. 
+
+This social-ecological mechanism highlights the importance of clearly defined boundaries detailed by Ostrom in her first principle [-@ostrom_governing_1990]. This research then echoes the importance of clear and effective boundaries and enforcement in community-based conservation efforts, and the positive endogenous changes in self-regulation that can follow in the wake of stronger boundaries.
+
+# 6 - Open Science
+All code and data used in this project can be found at the Github link here: https://github.com/matthewclark1223/ParticipatoryMappingProj
+
+# 7 - Acknowledgements
+# S1 - Details of participatory mapping activity
+![caption!.](../Figures/NgadoniSquares.png)
+
+# S2 - DAGS
+
+# S2a, S2b
+
+# S3 - Model posterior predictive checks
+![caption!.](../Figures/PosteriorPredictiveChecks.png)
+
+
+# References
+
+
+
+
+
+
+
+

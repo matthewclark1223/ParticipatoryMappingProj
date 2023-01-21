@@ -105,3 +105,40 @@ model{
   
     
 }//End model block
+
+
+
+//generated quantities for posterior predictive checks
+generated quantities {
+     real pPred[N];
+    real uPred[N];
+     real ZPred[N];
+int<lower = 0> yPred[N];
+for (i in 1:N){
+  
+  pPred[i] = IntBern+ranIntBern[S[i]] + EffDeclBern*Decl[i]+EffTheftBern*Theft[i]+EffGenBern*Gen[i]+
+        EffAreaBern*Area[i]+EffREDDBern*REDD[i]+EffMembBern*Memb[i]; //probability of a 0 or 1
+        
+        //get prob into 0,1
+  ZPred[i] = bernoulli_logit_rng(pPred[i]);
+        
+  uPred[i] = exp(IntNB+ranIntNB[S[i]] + 
+       EffDeclNB*Decl[i]+EffTheftNB*Theft[i]+
+        EffGenNB*Gen[i]+EffMembNB*Memb[i]+
+        EffAreaNB*Area[i]+EffREDDNB*REDD[i]);
+        
+  yPred[i]=neg_binomial_2_rng(uPred[i],phi );
+  
+  
+   // 
+}
+
+    
+        
+       
+      
+    
+
+
+}
+
