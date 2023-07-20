@@ -206,15 +206,35 @@ median(rethinking::inv_logit(postdf$IntBern+rowMeans(postdf[,5:47])+
                         postdf$EffAreaBern *mean(df2$Area)+postdf$EffREDDBern*mean(df2$REDD)+
                         postdf$EffMembBern *mean(df2$Memb)+postdf$EffGenBern*0))
 
+#quantile. Change 0.9 to 0.1 for lower bound. And remember to change gender
+quantile(rethinking::inv_logit(postdf$IntBern+rowMeans(postdf[,5:47])+
+                               postdf$EffDeclBern *mean(df2$Decl)+postdf$EffTheftBern*mean(df2$Theft)+
+                               postdf$EffAreaBern *mean(df2$Area)+postdf$EffREDDBern*mean(df2$REDD)+
+                               postdf$EffMembBern *mean(df2$Memb)+postdf$EffGenBern*1),0.9)
+
+
+#now do REDD: 1 is not REDD, 2 is REDD
+median(rethinking::inv_logit(postdf$IntBern+rowMeans(postdf[,5:47])+
+                               postdf$EffDeclBern *mean(df2$Decl)+postdf$EffTheftBern*mean(df2$Theft)+
+                               postdf$EffAreaBern *mean(df2$Area)+postdf$EffREDDBern*1+
+                               postdf$EffMembBern *mean(df2$Memb)+postdf$EffGenBern*mean(df2$Gen)))
+
+#quantiles
+quantile(rethinking::inv_logit(postdf$IntBern+rowMeans(postdf[,5:47])+
+                               postdf$EffDeclBern *mean(df2$Decl)+postdf$EffTheftBern*mean(df2$Theft)+
+                               postdf$EffAreaBern *mean(df2$Area)+postdf$EffREDDBern*2+
+                               postdf$EffMembBern *mean(df2$Memb)+postdf$EffGenBern*mean(df2$Gen)),0.1)
+
 
 #this doesnt work below!! I tdont think..
 mu<-exp(postdf$IntNB+rowMeans(postdf[,49:90])+
   postdf$EffDeclNB *mean(df2$Decl)+postdf$EffTheftNB*mean(df2$Theft)+
   postdf$EffAreaNB *mean(df2$Area)+postdf$EffREDDNB*mean(df2$REDD)+
-  postdf$EffMembNB *mean(df2$Memb)+postdf$EffGenNB*0)
+  postdf$EffMembNB *mean(df2$Memb)+postdf$EffGenNB*1)
 
 
 estty<-rnbinom(n=length(mu),mu=mu,size=postdf$phi)
 estty<-ifelse(estty>0,estty,NA)
 mean(estty,na.rm=T)
+
 

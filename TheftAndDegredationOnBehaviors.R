@@ -98,11 +98,12 @@ fit2Int%>%
                           levels=c("Low theft","High theft")) )%>%
   ggplot(.,aes(x=stdMangPercDecl,y=.epred))+
   tidybayes::stat_lineribbon(aes(fill_ramp = stat(.width)), .width = ppoints(20), fill = "#4d004b") +
-  ggdist::scale_fill_ramp_continuous(range = c(0.95, 0),name="Credibility Interval",from="white")+
+  ggdist::scale_fill_ramp_continuous(range = c(0.95, 0),name="Credibility interval",from="white")+
   #geom_jitter(data=df,aes(x=stdMangPercDecl,y=BundlesAbleToCollect230),size=1,stroke=1,alpha=0.3,fill="darkgrey",color="darkgrey",shape=21)+
   ggthemes::theme_clean() +
-  scale_x_continuous(breaks=c(min(df$stdMangPercDecl),(max(df$stdMangPercDecl)/2),max(df$stdMangPercDecl)),
+  scale_x_continuous(breaks=c(min(df$stdMangPercDecl),((min(df$stdMangPercDecl)+max(df$stdMangPercDecl))/2),max(df$stdMangPercDecl)),
                      labels = c("0%","50%","100%") )+
+  scale_y_continuous(limits = c(0,20))+
   facet_wrap(~Theft)+ylab("Bundles Insiders Can Collect")+xlab("Percent of Mangrove Area Declining")+
   theme(legend.position = "bottom")+mytheme
 
@@ -129,7 +130,7 @@ preddat<-fit2Int%>%
 
 
 preddat%>%group_by(stdMangPercDecl,Theft)%>%
-  summarise(meddy=median(.epred))%>%ungroup()%>%
+  summarise(meddy=median(.epred),lower=quantile(.epred,0.1),upper=quantile(.epred,0.9))%>%ungroup()%>%
   filter(stdMangPercDecl==min(stdMangPercDecl)|
            stdMangPercDecl==max(stdMangPercDecl)|
            stdMangPercDecl==quantile(stdMangPercDecl)[3])
