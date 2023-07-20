@@ -6,7 +6,7 @@ The code provided here allows interested readers to further examine the data and
 There are many files in this repository, but the important ones for reproducing the analyses are those listed below
 ### Files:
 
-* TheftAbdDegredationOnBehaviors.R - Code for running the analysis of predictors on preferences for fuelwood harvest
+* TheftAndDegredationOnBehaviors.R - Code for running the analysis of predictors on preferences for fuelwood harvest
 * HurdleNoGP.R - Code for running the analysis of predictors on mangrove patrols
 
 Also note that both scripts require users to have the 'tidyverse' suite of packages installed along with the STAN framework for Bayesian computing. 
