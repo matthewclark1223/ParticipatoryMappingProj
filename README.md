@@ -1,4 +1,4 @@
-# R and STAN code Repository for 'Quantifying Local Perceptions of Environmental Change and Links to Conservation Practices'
+# Data and R & STAN code Repository for 'Quantifying Local Perceptions of Environmental Change and Links to Conservation Practices'
 
 The code provided here allows interested readers to further examine the data and statistical models used for this research. Data should not be published elsewhere without the explicit permission of the authors.
 
