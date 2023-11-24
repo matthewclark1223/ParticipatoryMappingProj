@@ -45,8 +45,8 @@ df$ymod<-ifelse(df$Z ==0,0,df$y)
 
 ggplot(df2)+
   geom_density(aes(x=Y),size=1.5,color="blue",stat="count",show.legend = TRUE)+
-  geom_density(data=df[df$Draw%in%sample(unique(df$Draw),500),],aes(x=ymod,group=Draw),size=0.5,color=alpha("lightblue", 0.1),stat="count")+
-  theme_classic()+xlim(0,90)+xlab("Patrols")+ylab("Number of Observations")+
+  geom_density(data=df[df$Draw%in%sample(unique(df$Draw),1000),],aes(x=ymod,group=Draw),size=0.5,color=alpha("red", 0.01),stat="count")+
+  theme_classic()+xlim(range(df2$Y))+xlab("Patrols")+ylab("Number of Observations")+
   theme(axis.title = element_text(color="black",size=18),
         axis.text = element_text(color="black",size=15))
 
@@ -62,7 +62,7 @@ names(df)[1]<-"Value"
 row.names(df)<-NULL
 df<-data.frame(n=1:389,zPred=df[1:389,]$Value,yPred=df[390:778,]$Value)
 plot(df$yPred)
-points(dat$Y,add=TRUE,col="red")
+points(df$y,add=TRUE,col="red")
 
 
 hist(dat$Y,breaks=100)
