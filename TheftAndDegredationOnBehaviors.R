@@ -52,6 +52,19 @@ fit2Int<-brm(BundlesAbleToCollect230~stdOutsidersCutting*stdMangPercDecl+Occupat
                                 stdMangArea+CommmitteeMem+
                          REDDP+(1|Shehia314),family="poisson",data=df,prior = prior )
 
+
+##posterior predictiveChecks for S2 post review
+y<-df$BundlesAbleToCollect230
+y_pred<-posterior_predict(fit2Int)
+bayesplot::ppc_dens_overlay(y, y_pred[])+
+  scale_y_continuous(limits=range(0,.3))
+
+bayesplot::mcmc_trace(fit2Int,pars = c("b_stdOutsidersCutting","b_stdMangPercDecl","b_stdOutsidersCutting:stdMangPercDecl","b_REDDPREDD"))
+
+###
+
+
+
 bayesplot::color_scheme_set("black")
 mcmc_plot(fit2Int, variable = c("Out","MangPerc","REDD"), regex = TRUE)+
   ggthemes::theme_clean()+mytheme+
