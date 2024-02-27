@@ -28,6 +28,8 @@ dat$Ns = length(unique(dat$S))
 out=stan("HurdleEditedMC.stan", cores = 4, chains = 4,iter=6000, data = dat)
 #shinystan::launch_shinystan(out)
 
+traceplot(out,pars= c("EffDeclBern","EffTheftBern","EffREDDBern","EffDeclNB","EffTheftNB","EffREDDNB" ))
+
 post <- extract(out)
 postdf<-as.data.frame(post)
 #write.csv(postdf,"HurdlPposterior.csv")
